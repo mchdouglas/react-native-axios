@@ -6,6 +6,7 @@ import {
   StyleSheet,
   Image,
   TextInput,
+  Textarea,
 } from 'react-native';
 
 import axios from 'axios';
@@ -18,21 +19,24 @@ export default function App() {
     const {data: result} = await axios.get(
       `https://api.github.com/users/${username}`,
     );
+
     setUser(result);
   };
 
   return (
     <View style={styles.dados}>
+      <Text>Digite o usuário do github abaixo:</Text>
       <TextInput
-        placeholder="Usuario do github"
+        style={styles.input}
+        placeholder="github username"
         value={username}
         onChangeText={setUsername}
       />
-      <TouchableOpacity onPress={carregar}>
-        <Text>Carregar</Text>
+      <TouchableOpacity style={styles.btn} onPress={carregar}>
+        <Text style={styles.textBuscar}>Buscar</Text>
       </TouchableOpacity>
 
-      <Text>{user.name}</Text>
+      <Text style={styles.textName}>{user.name || user.login}</Text>
 
       <Image style={styles.img} source={{uri: user.avatar_url}} />
     </View>
@@ -45,9 +49,35 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginTop: 20,
   },
+  input: {
+    textAlign: 'center',
+  },
+  btn: {
+    backgroundColor: 'orange',
+    width: 90,
+    height: 30,
+    borderRadius: 7,
+    marginTop: 10,
+  },
+  textBuscar: {
+    flex: 1,
+    textAlign: 'center',
+    fontSize: 18,
+    fontWeight: 'bold',
+    color: '#fff',
+    alignItems: 'center',
+  },
+  textName: {
+    fontSize: 15,
+    marginTop: 12,
+    marginBottom: 12,
+    fontWeight: 'bold',
+    textAlign: 'center',
+  },
   img: {
     alignItems: 'center',
-    width: '90%',
-    height: '50%',
+    width: 280,
+    height: 280,
+    borderRadius: 900,
   },
 });
