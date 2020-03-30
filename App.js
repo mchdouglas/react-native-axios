@@ -6,7 +6,7 @@ import {
   StyleSheet,
   Image,
   TextInput,
-  Textarea,
+  Alert,
 } from 'react-native';
 
 import axios from 'axios';
@@ -16,17 +16,24 @@ export default function App() {
   const [username, setUsername] = useState('');
 
   const carregar = async () => {
-    const {data: result} = await axios.get(
-      `https://api.github.com/users/${username}`,
-    );
+    try {
+      const {data: result} = await axios.get(
+        `https://api.github.com/users/${username}`,
+      );
 
-    setUser(result);
+      setUser(result);
+    } catch (error) {
+      Alert.alert('Opss!', 'Este usuário não existe, informe um nome válido!', [
+        {text: 'OK, entendido'},
+      ]);
+    }
   };
 
   return (
     <View style={styles.dados}>
       <Text>Digite o usuário do github abaixo:</Text>
       <TextInput
+        autoFocus={true}
         style={styles.input}
         placeholder="github username"
         value={username}
